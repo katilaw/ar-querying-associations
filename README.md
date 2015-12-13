@@ -53,3 +53,57 @@ rake db:seed              # load the seed data from db/seeds.rb
 rake db:setup             # create the database and load the schema
 rake db:test:prepare      # Prepare test database from development schema
 ```
+
+###queries
+* How would you return all the recipes in your database?
+recipe = Recipes.all
+
+* How would you return all the comments in your database?
+comment = Comment.all
+
+* How would you return the most recent recipe posted in your database?
+recipe = Recipe.all.order(created_at: :desc).first
+
+* How would you return all the comments of the most recent recipe in your database?
+comment = Comment.find_by(recipe_id: Recipe.all.order(created_at: :desc).first.id)
+
+* How would you return the most recent comment of all your comments?
+comment = Comment.all.order(created_at: :desc).first
+
+* How would you return the recipe associated with the most recent comment in your database?
+recipe = Recipe.find_by(id: Comment.all.order(created_at: :desc).first.recipe_id)
+
+* How would you return all comments that include the string `brussels` in them?
+comment = Comment.where("body LIKE?", "%Brussels%")
+
+
+5.times do
+  Recipe.create(
+    title: "#{Faker::Hacker.adjective} #{Faker::Hacker.noun}",
+    instrutions: Faker::Hacker.say_something_smart
+  )
+end  
+Comment.create(
+  recipe_id: 1,
+  body: "Something about Brussels Sprouts"
+  )
+Comment.create(
+  recipe_id: 1,
+  body: "Something about pancakes"
+  )
+Comment.create(
+  recipe_id: 2,
+  body: "Roasted Brussels Sprouts"
+  )
+Comment.create(
+  recipe_id: 3,
+  body: "Blueberries"
+  )
+Comment.create(
+  recipe_id: 4,
+  body: "Carrots"
+  )
+Comment.create(
+  recipe_id: 5,
+  body: "Turkey"
+  )
